@@ -14,15 +14,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     public void startThread(View view){//link to button
-        ExampleThread thread = new ExampleThread(10);
-        thread.start();
+        ExampleRunnable runnable = new ExampleRunnable(10);
+//        start a new thread
+        new Thread(runnable).start();
     }
     public void stopThread(View view){
 
     }
-    class ExampleThread extends Thread{
+    class ExampleRunnable implements Runnable{
         int seconds;
-        ExampleThread(int seconds){
+        ExampleRunnable(int seconds){
             this.seconds=seconds;
         }
         @Override
