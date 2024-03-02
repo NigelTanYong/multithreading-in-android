@@ -14,16 +14,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     public void startThread(View view){//link to button
-        for(int i =0; i< 10; i++){
-            Log.d(TAG, "startThread: " + i);
-            try {
-                Thread.sleep(1000); // simulate heavy operations by freezing threads for 10 seconds
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        ExampleThread thread = new ExampleThread(10);
+        thread.start();
     }
     public void stopThread(View view){
 
+    }
+    class ExampleThread extends Thread{
+        int seconds;
+        ExampleThread(int seconds){
+            this.seconds=seconds;
+        }
+        @Override
+        public void run() {
+            for(int i =0; i< seconds; i++){
+                Log.d(TAG, "startThread: " + i);
+                try {
+                    Thread.sleep(1000); // simulate heavy operations by freezing threads for 10 seconds
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
