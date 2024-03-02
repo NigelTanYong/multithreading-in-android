@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button buttonStartThread;
     private Handler mainHandler = new Handler();
+
+    private volatile boolean stopThread = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +22,19 @@ public class MainActivity extends AppCompatActivity {
         buttonStartThread = findViewById(R.id.button_start_thread);
     }
     public void startThread(View view){//link to button
-        ExampleRunnable runnable = new ExampleRunnable(10);
+        stopThread = false;
+       ExampleRunnable runnable = new ExampleRunnable(10);
 //        start a new thread
         new Thread(runnable).start();
+        /*new Thread(new Runnable() { //inner thread
+            @Override
+            public void run() {
+                //work
+            }
+        }).start();*/
     }
     public void stopThread(View view){
-
+        stopThread = true;
     }
     class ExampleRunnable implements Runnable{
         int seconds;
@@ -35,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             for(int i =0; i< seconds; i++){
+                if(stopThread)
+                    return;
                 if(i == 5){
                     /*Handler threadHandler = new Handler(Looper.getMainLooper());
                     threadHandler.post(new Runnable() { // can be replaced with mainHandler
